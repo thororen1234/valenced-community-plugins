@@ -1,0 +1,23 @@
+{
+	"format": 1,
+	"id": "kmmiio99o.multi-scrobbler",
+	"name": "MultiScrobbler",
+	"description": "Shows what you are listening to on Last.fm, Libre.fm or ListenBrainz as your Discord activity.",
+	"author": "kmmiio99o <879393496627306587> (https://github.com/kmmiio99o \"GitHub\")",
+	"contributors": [
+		"thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+	],
+	"icon": "MusicIcon",
+	"version": "1.0.0",
+	"dependencies": {
+		"valenced.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": "*"
+		}
+	},
+	"dist": {
+		"script": "index.js"
+	}
+}
