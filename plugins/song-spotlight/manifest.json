@@ -1,0 +1,24 @@
+{
+	"format": 1,
+	"id": "nexpid.song-spotlight",
+	"name": "Song Spotlight",
+	"description": "Show off songs on your Discord profile.",
+	"author": "nexpid <853550207039832084> (https://github.com/nexpid \"GitHub\")",
+	"contributors": [
+		"thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+	],
+	"icon": "MusicIcon",
+	"version": "1.0.0",
+	"dependencies": {
+		"valenced.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": "*"
+		},
+		"valenced.settings.plugins": {}
+	},
+	"dist": {
+		"script": "index.js"
+	}
+}

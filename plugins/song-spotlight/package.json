@@ -1,0 +1,7 @@
+{
+	"name": "@valenced/song-spotlight",
+	"private": true,
+	"dependencies": {
+		"@song-spotlight/api": "^2.2.0"
+	}
+}
