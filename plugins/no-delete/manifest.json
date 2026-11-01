@@ -1,0 +1,23 @@
+{
+	"format": 1,
+	"id": "thororen.no-delete",
+	"name": "No Delete",
+	"description": "Keeps deleted messages in chat until you dismiss them or restart the app.",
+	"author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+	"contributors": [
+		"meqativ <744276454946242723> (https://github.com/meqativ \"GitHub\")"
+	],
+	"icon": "TrashIcon",
+	"version": "1.0.0",
+	"dependencies": {
+		"valenced.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": "*"
+		}
+	},
+	"dist": {
+		"script": "index.js"
+	}
+}
