@@ -1,8 +1,35 @@
 {
   "format": 1,
-  "name": "Valenced Community Plugins",
-  "description": "Plugins maintained by the Valenced community.",
+  "name": "Plugin Repository",
+  "description": "",
   "plugins": {
+    "bleelblep.show-tag": {
+      "name": "Show Tag",
+      "description": "Show usernames next to display names in chat, including in replies.",
+      "author": "bleelblep <119043674385547264>",
+      "contributors": [
+        "Cynosphere <150745989836308480> (https://github.com/Cynosphere \"GitHub\")"
+      ],
+      "icon": "AtIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/bleelblep.show-tag@1.0.0.zip",
+          "sha256": "1721388c15c56ba4169c1a527377e37be0f5f6188ced083fc153f5fe6c55b3bb",
+          "size": 1434,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": ">=350.2"
+            }
+          }
+        }
+      }
+    },
     "contrabag.file-size-on-picker": {
       "name": "File Size on Picker",
       "description": "Show file sizes in the media picker.",
@@ -16,7 +43,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/contrabag.file-size-on-picker@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/contrabag.file-size-on-picker@1.0.0.zip",
           "sha256": "98b588e76d6effc5830166fcc69da648012ec8a9eec851500dc72384255866c3",
           "size": 1860,
           "dependencies": {
@@ -43,7 +70,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/dev.benjii.gtci@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/dev.benjii.gtci@1.0.0.zip",
           "sha256": "f4f0ff3b0f96975b20d1392ba67710ad868fd3867991c10a6550da27f0b5d6b8",
           "size": 853,
           "dependencies": {
@@ -66,13 +93,26 @@
       ],
       "icon": "AppsIcon",
       "channels": {
-        "latest": "1.0.0"
+        "latest": "2.0.0"
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/dev.cocobo1.command-lib@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/dev.cocobo1.command-lib@1.0.0.zip",
           "sha256": "d28ac1b2cfa03b628624075e0a7ca02b97699c8384188d1c956856eecdd852c0",
           "size": 2875,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        },
+        "2.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/dev.cocobo1.command-lib@2.0.0.zip",
+          "sha256": "90bcadc76fa4e38257d688868875fd3ab3054c2857069735b2455c62c29a23f8",
+          "size": 2900,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"
@@ -93,11 +133,11 @@
       ],
       "icon": "EmojiSmilingFaceWithHeartsIcon",
       "channels": {
-        "latest": "1.0.0"
+        "latest": "1.0.1"
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/dev.cocobo1.petpet@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/dev.cocobo1.petpet@1.0.0.zip",
           "sha256": "ce9742b2560b00542dcdcb43030341b8df1279b20e9612af6c4fcea23ae69793",
           "size": 1911,
           "dependencies": {
@@ -109,6 +149,100 @@
             },
             "dev.cocobo1.command-lib": {
               "version": ">=1 <2"
+            }
+          }
+        },
+        "1.0.1": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/dev.cocobo1.petpet@1.0.1.zip",
+          "sha256": "ef013cebc8fee363b4cd7be793757c593919db05d4eb80b36547fcf0a2838296",
+          "size": 1908,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            },
+            "dev.cocobo1.command-lib": {
+              "version": ">=2 <3"
+            }
+          }
+        }
+      }
+    },
+    "dev.loki-vtx.selectablebios": {
+      "name": "Selectable Bios",
+      "description": "Makes profile 'About Me' text selectable, allowing you to copy and share it.",
+      "author": "Loki-vtx <918437723755384832> (https://github.com/Loki-vtx \"GitHub\")",
+      "icon": "PencilIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/dev.loki-vtx.selectablebios@1.0.0.zip",
+          "sha256": "0d16a2bc7050733f78d82f8d1b493fc16e931e9cdee5a0709725e85377d2b413",
+          "size": 896,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "fiery.text-replace": {
+      "name": "Text Replace",
+      "description": "Replaces text in messages you send using your own rules.",
+      "author": "Fiery <890228870559698955>",
+      "contributors": [
+        "Purple_Ξye™ <646535537334812682>",
+        "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+      ],
+      "icon": "PencilIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/fiery.text-replace@1.0.0.zip",
+          "sha256": "d02d06d20dca87a5ab07a3f80b8cafdfcd475a034e8b21986acf0cd2135b65f8",
+          "size": 2945,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "hakuxyz.clear-urls": {
+      "name": "Clear URLs",
+      "description": "Strips tracking parameters from URLs you view, send, or edit.",
+      "author": "hakuxyz (https://github.com/hakuxyz \"GitHub\")",
+      "contributors": [
+        "nexpid <853550207039832084> (https://github.com/nexpid \"GitHub\")"
+      ],
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/hakuxyz.clear-urls@1.0.0.zip",
+          "sha256": "248a3c4799a7675093064a511472819d8404905d8fb18d0d11cddd4fa84d18b7",
+          "size": 1595,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
             }
           }
         }
@@ -128,7 +262,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/k1ngop.anonymous-file-names@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/k1ngop.anonymous-file-names@1.0.0.zip",
           "sha256": "460d8d3f81552299a46f8da13b28d0be358f15d9942bc58135aa5bd4ad4b5584",
           "size": 1773,
           "dependencies": {
@@ -152,7 +286,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/k1ngop.dashless@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/k1ngop.dashless@1.0.0.zip",
           "sha256": "6e42fae547e82975cbdce124d7f7be7a73bb8d5a2a9a5f6463d45c07dc8e8d88",
           "size": 1132,
           "dependencies": {
@@ -176,7 +310,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/k1ngop.disable-call-idle@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/k1ngop.disable-call-idle@1.0.0.zip",
           "sha256": "268f8cd5558a5e05f713aa742a82301389cf43e95c7b73f61859c8dae66187d8",
           "size": 729,
           "dependencies": {
@@ -203,9 +337,60 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/k1ngop.no-idle@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/k1ngop.no-idle@1.0.0.zip",
           "sha256": "db4e8f243c2dd9e1ca2f1676473364103b0b01edba5472d5b4eb3a43303be6c8",
           "size": 639,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "k1ngop.valid-user": {
+      "name": "ValidUser",
+      "description": "Resolves @unknown-user mentions to a normal clickable mention.",
+      "author": "k1ng_op <641266820187160576> (https://github.com/k1ng0p \"GitHub\")",
+      "icon": "AtIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/k1ngop.valid-user@1.0.0.zip",
+          "sha256": "1a0effc927caf111bc08aa8f1063de7be632de5d8c61951d5029bebea3e349c3",
+          "size": 1687,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "kmmiio99o.multi-scrobbler": {
+      "name": "MultiScrobbler",
+      "description": "Shows what you are listening to on Last.fm, Libre.fm or ListenBrainz as your Discord activity.",
+      "author": "kmmiio99o <879393496627306587> (https://github.com/kmmiio99o \"GitHub\")",
+      "contributors": [
+        "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+      ],
+      "icon": "MusicIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/kmmiio99o.multi-scrobbler@1.0.0.zip",
+          "sha256": "2bae5dc4043c922b37fea1408907511a2f63d08c35f45e4b60a5ca822e531903",
+          "size": 4571,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"
@@ -223,11 +408,24 @@
       "author": "NoReplyUI5 <1053918356375351386> (https://github.com/NoReplyUI5 \"GitHub\")",
       "icon": "voice_bar_bluetooth",
       "channels": {
-        "latest": "1.0.0"
+        "latest": "1.0.0.1"
       },
       "versions": {
+        "1.0.0.1": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/mxtiy.audiofix@1.0.0.1.zip",
+          "sha256": "a9b45367a85b34349acf6066d8f493eb2ce1f05e074d40d89591a83eccaa367d",
+          "size": 1022,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        },
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/mxtiy.audiofix@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/mxtiy.audiofix@1.0.0.zip",
           "sha256": "931694b31afa17d308209945fb3aad744a01a317a98298f16fab00f9b2295e08",
           "size": 796,
           "dependencies": {
@@ -251,7 +449,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.better-chat-buttons@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.better-chat-buttons@1.0.0.zip",
           "sha256": "5ac5663ad0f93f30206957b7a014003ea6520d87cd3790d67f4dc343a9b0c55e",
           "size": 1969,
           "dependencies": {
@@ -275,7 +473,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.better-typing-indicators@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.better-typing-indicators@1.0.0.zip",
           "sha256": "06cb8f7a6858e162320e3f11b1dfe4442a574daedc0d6c7130f0667f557b0b7e",
           "size": 14869,
           "dependencies": {
@@ -299,7 +497,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.block-youtube-ads@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.block-youtube-ads@1.0.0.zip",
           "sha256": "2715d1d50860ca14fbdd2d2cfef6c09e6911f80fc0a24d41d069138aa9eb9cdc",
           "size": 11690,
           "dependencies": {
@@ -329,7 +527,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.fake-nitro@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.fake-nitro@1.0.0.zip",
           "sha256": "e2e9a21f1f674b8ccd0888a2b14a3f471115d835d51b784dadc69f87dd2a134d",
           "size": 5662,
           "dependencies": {
@@ -352,7 +550,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.google-sans-flex@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.google-sans-flex@1.0.0.zip",
           "sha256": "46296844fb91f93523b422b36b500840f0c3df9a3502bc837ce37ce132793f57",
           "size": 2424236,
           "dependencies": {
@@ -379,7 +577,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.hide-blocked-messages@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.hide-blocked-messages@1.0.0.zip",
           "sha256": "89d47806cae93ad66283314afe54048abf02dee606c53f44fb10ea4b1b9bfbed",
           "size": 1422,
           "dependencies": {
@@ -403,7 +601,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.join-as-lurker@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.join-as-lurker@1.0.0.zip",
           "sha256": "feeb1fa4bce6c7ce989cec22851ebac66c0077d3804265b54e4c5faf69b7a2e4",
           "size": 1236,
           "dependencies": {
@@ -427,7 +625,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.link-alert-copy@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.link-alert-copy@1.0.0.zip",
           "sha256": "5e1469cc0e262aa82f29153935d539140cb8f9ae78b7204cf12dcde384e49468",
           "size": 934,
           "dependencies": {
@@ -451,7 +649,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.mention-avatars@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.mention-avatars@1.0.0.zip",
           "sha256": "e42f44b6e5fe7daf5c8c45f6283f29158a3fc073e6174e237d94fe42bfb4c128",
           "size": 13739,
           "dependencies": {
@@ -475,7 +673,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.message-link-preview@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.message-link-preview@1.0.0.zip",
           "sha256": "b31cf18cece202deeefb14059b01448de22f4168dc074a91c034ce626a092318",
           "size": 33402,
           "dependencies": {
@@ -499,7 +697,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.message-logger@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.message-logger@1.0.0.zip",
           "sha256": "51c9690fc08cc77e207fbd840967bcb55258e1ccb3e06ed8c7f33283a07c38ea",
           "size": 22349,
           "dependencies": {
@@ -523,7 +721,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.reactions-sheet-fix@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.reactions-sheet-fix@1.0.0.zip",
           "sha256": "e3ec7ff0140caf4cdf5b466bc6041b921463b2d0aada6acd45268acefc251db0",
           "size": 1791,
           "dependencies": {
@@ -547,7 +745,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.shiki-codeblocks@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.shiki-codeblocks@1.0.0.zip",
           "sha256": "0ef68a62eaa343e4226a648fd58615068c5b957c54b67fc47d4b4a521129b1d3",
           "size": 749481,
           "dependencies": {
@@ -571,7 +769,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.show-timeout-duration@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.show-timeout-duration@1.0.0.zip",
           "sha256": "071e8abe561874fea3ed683e4e5a7bf3e4fac2bc5fa032e99c218d6bb0e03e6f",
           "size": 21017,
           "dependencies": {
@@ -595,7 +793,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.silent-typing@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.silent-typing@1.0.0.zip",
           "sha256": "591da6ca0e0adf83eda41cb2437c21960025ff5f33360b113a41308ab2bdb901",
           "size": 1995,
           "dependencies": {
@@ -622,7 +820,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.tenor-gif-search@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.tenor-gif-search@1.0.0.zip",
           "sha256": "4df2f877ec1f6c88c010353ed1da81cf5cd68ef5c7ee48c14be877c96503b715",
           "size": 2322,
           "dependencies": {
@@ -646,7 +844,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/palmdevs.who-reacted@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/palmdevs.who-reacted@1.0.0.zip",
           "sha256": "85ae8d292b969e93bd4c517b26d2b657889e933fbee18ff24ffbacfaf64e12da",
           "size": 28127,
           "dependencies": {
@@ -655,6 +853,147 @@
             },
             "discord": {
               "version": ">=352.2"
+            }
+          }
+        }
+      }
+    },
+    "redstonekasi.no-embed-copy": {
+      "name": "NoEmbedCopy",
+      "description": "Makes pressing on an embed no longer copy its content.",
+      "author": "redstonekasi <265064055490871297>",
+      "contributors": [
+        "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+      ],
+      "icon": "CopyIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/redstonekasi.no-embed-copy@1.0.0.zip",
+          "sha256": "862a6868013897e815ec0f511841f4558576bed795ccc84169896c923100b7e2",
+          "size": 870,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "sylv256.nsfw-blur": {
+      "name": "NSFWBlur",
+      "description": "Blurs image previews and disables embed media in NSFW channels.",
+      "author": "sylv256 <209015289990348800>",
+      "contributors": [
+        "siguma <737597276339437578>",
+        "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+      ],
+      "icon": "ImageIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/sylv256.nsfw-blur@1.0.0.zip",
+          "sha256": "bf44a702647762ab52af1465d7c9c944e20dc19b74765e1a6630f2e59d47fba9",
+          "size": 1009,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "theunrealzaka.favorite-anything": {
+      "name": "Favorite Anything",
+      "description": "Favorite any image or video, not just GIFs, and keep saved favorites loading.",
+      "author": "TheUnrealZaka <1268335382118924406> (https://www.theunrealzaka.me \"Website\")",
+      "contributors": [
+        "nin0dev",
+        "davri"
+      ],
+      "icon": "StarIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/theunrealzaka.favorite-anything@1.0.0.zip",
+          "sha256": "dcc3dfa22dc17b14d5bc7506d04c04f89c54b642decc62ed01c135c4a1054691",
+          "size": 3031,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "thororen.character-counter": {
+      "name": "Character Counter",
+      "description": "Adds a character counter to the chat input.",
+      "author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+      "contributors": [
+        "creations <209830981060788225> (https://creations.works \"Website\") (https://github.com/creationsss \"GitHub\")"
+      ],
+      "icon": "LettersIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.character-counter@1.0.0.zip",
+          "sha256": "d751ed40ed71bd000f72f5ee9ba4c63c6aef4026d61556a78bb3241c1aa48e9b",
+          "size": 1602,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "thororen.new-guild-settings": {
+      "name": "New Guild Settings",
+      "description": "Automatically mutes new servers and changes their notification and channel settings when you join them.",
+      "author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+      "contributors": [
+        "carince <818323528755314698>",
+        "Glitch <269567451199569920>",
+        "Nuckyz <235834946571337729>",
+        "Mopi <1022189106614243350>",
+        "GabiRP <507955112027750401>"
+      ],
+      "icon": "BellSlashIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.new-guild-settings@1.0.0.zip",
+          "sha256": "981f5a8b483b6d03d0684b4820596b2683188faf091c34550544d63ca7cfee98",
+          "size": 2050,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
             }
           }
         }
@@ -675,7 +1014,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/valenced.api.themes@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/valenced.api.themes@1.0.0.zip",
           "sha256": "3dab391b584a5b168305c78855afaf997054514e1039d20c4c6e70af09131a32",
           "size": 64959,
           "dependencies": {
@@ -688,7 +1027,7 @@
           }
         },
         "1.0.1": {
-          "url": "https://community.valenced.app/pool/valenced.api.themes@1.0.1.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/valenced.api.themes@1.0.1.zip",
           "sha256": "9fe44a0f16635b5eb835c9355ca9a5255addd7e028ea3a963a98a55e469be3ab",
           "size": 65380,
           "dependencies": {
@@ -715,7 +1054,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/valenced.developer-kit@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/valenced.developer-kit@1.0.0.zip",
           "sha256": "5c40e23a74eabff138ac48228e9652ad6146d739de6ff8cfef793a4f00e10ca8",
           "size": 21989,
           "dependencies": {
@@ -750,7 +1089,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/valenced.settings.themes@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/valenced.settings.themes@1.0.0.zip",
           "sha256": "94e6ca79bc875f3715698d42c12bc7668c87291d25dbffb06a7770a14caae2b4",
           "size": 9398,
           "dependencies": {
@@ -779,7 +1118,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/valenced.themes.legacy@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/valenced.themes.legacy@1.0.0.zip",
           "sha256": "9563acb8ce7a8b2594dc1c364c7aae9fd0abe0a36f23c9408cbca3ec9250dbee",
           "size": 2796,
           "dependencies": {
@@ -807,7 +1146,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/wolfie.add-attachments@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/wolfie.add-attachments@1.0.0.zip",
           "sha256": "aa60a429c78c57fb1135cdd42c141c34577f60e9a32e2d8ddbf73ba21db29d77",
           "size": 2384,
           "dependencies": {
@@ -834,7 +1173,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/wolfie.global-badges@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/wolfie.global-badges@1.0.0.zip",
           "sha256": "d1e0a13cf06b5cdcd9521d2539e0428120f3582195c64e79a36e5aea1e49d0dc",
           "size": 4351,
           "dependencies": {
@@ -858,7 +1197,7 @@
       },
       "versions": {
         "1.0.0": {
-          "url": "https://community.valenced.app/pool/wolfie.sound-controls@1.0.0.zip",
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/wolfie.sound-controls@1.0.0.zip",
           "sha256": "7dc34241d4fff089c5e46811d8d024463d8bfa5b79d08d7bd6f24bd45bf879e5",
           "size": 2449,
           "dependencies": {
