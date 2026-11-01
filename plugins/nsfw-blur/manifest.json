@@ -1,0 +1,24 @@
+{
+	"format": 1,
+	"id": "sylv256.nsfw-blur",
+	"name": "NSFWBlur",
+	"description": "Blurs image previews and disables embed media in NSFW channels.",
+	"author": "sylv256 <209015289990348800>",
+	"contributors": [
+		"siguma <737597276339437578>",
+		"thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+	],
+	"icon": "ImageIcon",
+	"version": "1.0.0",
+	"dependencies": {
+		"valenced.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": "*"
+		}
+	},
+	"dist": {
+		"script": "index.js"
+	}
+}
