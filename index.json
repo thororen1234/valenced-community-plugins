@@ -1,15 +1,15 @@
 {
   "format": 1,
-  "name": "Valenced Community Plugins",
-  "description": "Plugins maintained by the Valenced community.",
+  "name": "Thors Community Plugins",
+  "description": "Plugins maintained by thororen.",
   "plugins": {
     "fiery.text-replace": {
       "name": "Text Replace",
       "description": "Replaces text in messages you send using your own rules.",
-      "author": "Fiery <890228870559698955>",
+      "author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
       "contributors": [
-        "Purple_Ξye™ <646535537334812682>",
-        "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+        "Fiery <890228870559698955>",
+        "Purple_Ξye™ <646535537334812682>"
       ],
       "icon": "PencilIcon",
       "channels": {
@@ -18,7 +18,7 @@
       "versions": {
         "1.0.0": {
           "url": "https://thororen1234.github.io/valenced-community-plugins/pool/fiery.text-replace@1.0.0.zip",
-          "sha256": "d02d06d20dca87a5ab07a3f80b8cafdfcd475a034e8b21986acf0cd2135b65f8",
+          "sha256": "9b31536429f0e43eadb7177744357acb862920ede6b238ee01fab17e5ac819cb",
           "size": 2945,
           "dependencies": {
             "valenced.api": {
@@ -45,63 +45,8 @@
       "versions": {
         "1.0.0": {
           "url": "https://thororen1234.github.io/valenced-community-plugins/pool/kmmiio99o.multi-scrobbler@1.0.0.zip",
-          "sha256": "2bae5dc4043c922b37fea1408907511a2f63d08c35f45e4b60a5ca822e531903",
+          "sha256": "2411eae0428e15587526502bf690bb7e02bd08f12f1bbb976b3859ef7924d8e4",
           "size": 4571,
-          "dependencies": {
-            "valenced.api": {
-              "version": ">=1 <2"
-            },
-            "discord": {
-              "version": "*"
-            }
-          }
-        }
-      }
-    },
-    "redstonekasi.no-embed-copy": {
-      "name": "NoEmbedCopy",
-      "description": "Makes pressing on an embed no longer copy its content.",
-      "author": "redstonekasi <265064055490871297>",
-      "contributors": [
-        "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
-      ],
-      "icon": "CopyIcon",
-      "channels": {
-        "latest": "1.0.0"
-      },
-      "versions": {
-        "1.0.0": {
-          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/redstonekasi.no-embed-copy@1.0.0.zip",
-          "sha256": "862a6868013897e815ec0f511841f4558576bed795ccc84169896c923100b7e2",
-          "size": 870,
-          "dependencies": {
-            "valenced.api": {
-              "version": ">=1 <2"
-            },
-            "discord": {
-              "version": "*"
-            }
-          }
-        }
-      }
-    },
-    "sylv256.nsfw-blur": {
-      "name": "NSFWBlur",
-      "description": "Blurs image previews and disables embed media in NSFW channels.",
-      "author": "sylv256 <209015289990348800>",
-      "contributors": [
-        "siguma <737597276339437578>",
-        "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
-      ],
-      "icon": "ImageIcon",
-      "channels": {
-        "latest": "1.0.0"
-      },
-      "versions": {
-        "1.0.0": {
-          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/sylv256.nsfw-blur@1.0.0.zip",
-          "sha256": "bf44a702647762ab52af1465d7c9c944e20dc19b74765e1a6630f2e59d47fba9",
-          "size": 1009,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"
@@ -131,8 +76,63 @@
       "versions": {
         "1.0.0": {
           "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.new-guild-settings@1.0.0.zip",
-          "sha256": "981f5a8b483b6d03d0684b4820596b2683188faf091c34550544d63ca7cfee98",
+          "sha256": "717ed7b1f73eb1c776d07bfbe318015373ec8f7b808125bd8c9dd7d79a2043f2",
           "size": 2050,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "thororen.no-embed-copy": {
+      "name": "No Embed Copy",
+      "description": "Makes pressing on an embed no longer copy its content.",
+      "author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+      "contributors": [
+        "redstonekasi <265064055490871297> (https://github.com/redstonekasi \"GitHub\")"
+      ],
+      "icon": "CopyIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.no-embed-copy@1.0.0.zip",
+          "sha256": "3f8076ef6015807a364068d07510951fdd8b3eeb5be9d8c05898e6bdcf771eab",
+          "size": 876,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "thororen.nsfw-blur": {
+      "name": "NSFW Blur",
+      "description": "Blur images and disable embed media in NSFW channels.",
+      "author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+      "contributors": [
+        "sylv256 <209015289990348800>",
+        "siguma <737597276339437578>"
+      ],
+      "icon": "ImageIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.nsfw-blur@1.0.0.zip",
+          "sha256": "a56421cb64f422bc8d9e0f2e45b6af84e89ddf53c875cc8bc141478d20d29be8",
+          "size": 1002,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"
@@ -158,8 +158,8 @@
       "versions": {
         "1.0.0": {
           "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.streaks@1.0.0.zip",
-          "sha256": "8e4e704dad936e62c48c0e80d20d90387fa45b50e8b0a2005550d4dd68a44c63",
-          "size": 16633,
+          "sha256": "2ffe48ca26d67ba4532b5e4d304013a86bab017d261ec5ab052493f71d386e93",
+          "size": 16981,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"
