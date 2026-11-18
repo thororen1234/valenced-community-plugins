@@ -1,7 +1,7 @@
 import { ToastActionCreators } from '@valenced/discord/actions'
 import { Stores } from '@valenced/discord/flux'
 import { createStore } from 'zustand/vanilla'
-import { authorize } from './auth'
+import { reauthorize } from './auth'
 import type { DiscordModules } from '@valenced/discord/types'
 import type { JsonStorage } from '@valenced/json-storage'
 
@@ -123,7 +123,7 @@ async function request(
 	if (res.status === 401) {
 		if (!retried) {
 			if (getToken() === token) {
-				reauthorizing ??= authorize()
+				reauthorizing ??= reauthorize()
 					.catch(() => {})
 					.finally(() => {
 						reauthorizing = undefined

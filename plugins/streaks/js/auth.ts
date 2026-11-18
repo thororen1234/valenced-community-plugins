@@ -17,6 +17,19 @@ export function setHTTP(value: HTTP | undefined) {
 	http = value
 }
 
+export async function reauthorize() {
+	if (!http) throw new Error('Enable the Streaks plugin first.')
+
+	const { body } = await http.get<{ application?: { id?: string } }[]>({
+		url: '/oauth2/tokens',
+		query: { application_ids: CLIENT_ID },
+	})
+	if (!body?.some(token => token.application?.id === CLIENT_ID))
+		throw new Error('Streaks is no longer authorized.')
+
+	await authorize()
+}
+
 export async function authorize() {
 	if (!http) throw new Error('Enable the Streaks plugin first.')
 
