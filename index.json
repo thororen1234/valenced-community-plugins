@@ -1,7 +1,7 @@
 {
   "format": 1,
-  "name": "Plugin Repository",
-  "description": "",
+  "name": "Valenced Community Plugins",
+  "description": "Plugins maintained by the Valenced community.",
   "plugins": {
     "fiery.text-replace": {
       "name": "Text Replace",
@@ -139,6 +139,33 @@
             },
             "discord": {
               "version": "*"
+            }
+          }
+        }
+      }
+    },
+    "thororen.streaks": {
+      "name": "Streaks",
+      "description": "Shows a streak next to a user when you exchange DMs with them on consecutive days.",
+      "author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+      "contributors": [
+        "Moowi <246128594756173824>"
+      ],
+      "icon": "FireIcon",
+      "channels": {
+        "latest": "1.0.0"
+      },
+      "versions": {
+        "1.0.0": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.streaks@1.0.0.zip",
+          "sha256": "56c9960511fb097508902bd02ad575d1396df1a5d69e8a77522a9825ea5c30b9",
+          "size": 16642,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": ">=354.12"
             }
           }
         }
