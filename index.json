@@ -158,8 +158,8 @@
       "versions": {
         "1.0.0": {
           "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.streaks@1.0.0.zip",
-          "sha256": "2ffe48ca26d67ba4532b5e4d304013a86bab017d261ec5ab052493f71d386e93",
-          "size": 16981,
+          "sha256": "204bba21edc974bc42755c385848428b43e4bd8699b6c3432ca600d85f175106",
+          "size": 19451,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"
