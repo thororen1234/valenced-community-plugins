@@ -18,7 +18,6 @@ import app.valenced.xposed.api.DexFinder
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import org.json.JSONObject
-import java.lang.reflect.Modifier
 import java.util.WeakHashMap
 
 private const val MESSAGE_VIEW = "com.discord.chat.presentation.message.MessageView"
@@ -34,7 +33,7 @@ private const val GAP_DP = 4f
 internal class StreakHooks(dexFinder: DexFinder) {
     private data class Badge(val count: Int, val color: Int)
 
-    private class Slot(val roleIcon: View, val wrapper: LinearLayout, val badge: ImageView, val name: TextView) {
+    private class Slot(val roleIcon: View, val wrapper: LinearLayout, val badge: ImageView, val name: TextView, val timestamp: TextView?) {
         var messageId: String? = null
         var shown: Badge? = null
     }
@@ -50,7 +49,6 @@ internal class StreakHooks(dexFinder: DexFinder) {
     private val slots = WeakHashMap<ViewGroup, Slot>()
     private var ids: ViewIds? = null
     private var fireIconId: Int? = null
-    private var countTypeface: Typeface? = null
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
@@ -60,23 +58,6 @@ internal class StreakHooks(dexFinder: DexFinder) {
     private val chatListView: Class<*> = dexFinder.classLoader.loadClass(CHAT_LIST_VIEW_MANAGER).declaredMethods
         .single { it.name == "setFloatingChatInputEnabled" && !it.isBridge }
         .parameterTypes[0]
-
-    private val discordFont = runCatching {
-        val font = dexFinder.findClass {
-            matcher {
-                superClass("java.lang.Enum")
-                usingEqStrings("PrimaryMedium")
-            }
-        }!!
-        val setFont = dexFinder.findMethod {
-            matcher {
-                modifiers(Modifier.STATIC)
-                paramTypes("android.widget.TextView", font.name)
-            }
-        }!!
-        val constants = font.enumConstants!!.associateBy { (it as Enum<*>).name }
-        setFont to (constants["PrimarySemibold"] ?: constants.getValue("PrimaryMedium"))
-    }.getOrNull()
 
     private val unhooks: List<XC_MethodHook.Unhook>
 
@@ -96,7 +77,7 @@ internal class StreakHooks(dexFinder: DexFinder) {
                     val header = view.childWithId(ids.header) ?: return
                     val roleIcon = header.findViewById<View>(ids.roleIcon) ?: return
                     val name = header.findViewById<View>(ids.authorName) as? TextView ?: return
-                    insertSlot(roleIcon, name)?.also { slots[view] = it } ?: return
+                    insertSlot(roleIcon, name, header.findViewById<View>(ids.timestamp) as? TextView)?.also { slots[view] = it } ?: return
                 }
 
                 slot.messageId = messageIdField.get(param.args[0]) as String
@@ -109,6 +90,7 @@ internal class StreakHooks(dexFinder: DexFinder) {
         val header = view.idOf("header")
         val authorName = view.idOf("author_name")
         val roleIcon = view.idOf("role_icon")
+        val timestamp = view.idOf("timestamp")
     }
 
     fun putAuthors(json: String) {
@@ -149,7 +131,7 @@ internal class StreakHooks(dexFinder: DexFinder) {
     }
 
     // The header is a ConstraintLayout chain with R8-renamed params, so the wrapper takes the role icon's ID and params
-    private fun insertSlot(roleIcon: View, name: TextView): Slot? {
+    private fun insertSlot(roleIcon: View, name: TextView, timestamp: TextView?): Slot? {
         val parent = roleIcon.parent as? ViewGroup ?: return null
         val index = parent.indexOfChild(roleIcon)
         val params = roleIcon.layoutParams
@@ -172,7 +154,7 @@ internal class StreakHooks(dexFinder: DexFinder) {
         wrapper.addView(badge, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         parent.addView(wrapper, index, params)
 
-        return Slot(roleIcon, wrapper, badge, name)
+        return Slot(roleIcon, wrapper, badge, name, timestamp)
     }
 
     private fun removeSlot(slot: Slot) {
@@ -203,7 +185,7 @@ internal class StreakHooks(dexFinder: DexFinder) {
         val roleShown = slot.roleIcon.visibility == View.VISIBLE
 
         if (badge != slot.shown)
-            slot.badge.setImageDrawable(badge?.let { BadgeDrawable(fireIcon(slot.name), it, slot.name.textSize, countTypeface(slot.name)) })
+            slot.badge.setImageDrawable(badge?.let { BadgeDrawable(fireIcon(slot.name), it, slot.name.textSize, Typeface.create(slot.timestamp?.typeface, Typeface.BOLD)) })
         slot.badge.visibility = if (badge != null) View.VISIBLE else View.GONE
 
         val params = slot.badge.layoutParams as LinearLayout.LayoutParams
@@ -225,11 +207,6 @@ internal class StreakHooks(dexFinder: DexFinder) {
             .also { fireIconId = it }
         return if (id == 0) null else view.context.getDrawable(id)?.mutate()
     }
-
-    private fun countTypeface(view: TextView): Typeface =
-        countTypeface ?: (discordFont?.let { (setFont, font) ->
-            runCatching { TextView(view.context).also { setFont.invoke(null, it, font) }.typeface }.getOrNull()
-        } ?: Typeface.DEFAULT_BOLD).also { countTypeface = it }
 
     private class BadgeDrawable(private val icon: Drawable?, badge: Badge, size: Float, typeface: Typeface) : Drawable() {
         private val text = if (icon == null) "🔥${badge.count}" else badge.count.toString()

@@ -5,7 +5,7 @@ import { withName, withProps } from '@valenced/modules/finders/filters'
 import { after } from '@valenced/patcher'
 import { getErrorStack } from '@valenced/utils/error'
 import { processColor } from 'react-native'
-import { setHTTP } from './auth'
+import { http, setHTTP } from './auth'
 import { patchDMList } from './dms'
 import { clearBadges, putAuthors, setBadges } from './native'
 import SettingsComponent from './settings'
@@ -53,6 +53,12 @@ interface Message {
 	state?: string
 }
 
+interface Entry {
+	key: string
+	self: boolean
+	dm: boolean
+}
+
 const MessageRowType = 1
 const MaxRegistered = 2000
 
@@ -67,14 +73,8 @@ export default plugin<{ jsonStorage: Settings }>({
 		default: DefaultSettings,
 	},
 	start({ cleanup, jsonStorage, plugin }) {
-		if (plugin.startedLate) {
-			plugin.requireReload()
-			return
-		}
-
 		setStorage(jsonStorage)
 
-		let http: HTTP | undefined
 		const ChannelStore = Stores.ChannelStore as ChannelStore
 
 		const pushBadges = () => {
@@ -204,19 +204,8 @@ export default plugin<{ jsonStorage: Settings }>({
 		Dispatcher.subscribe('CONNECTION_OPEN', onConnectionOpen)
 		Dispatcher.subscribe('MESSAGE_CREATE', onMessageCreate as never)
 
-		const registered = new Map<
-			string,
-			{ key: string; self: boolean; dm: boolean }
-		>()
-		const authorFor = ({
-			key,
-			self,
-			dm,
-		}: {
-			key: string
-			self: boolean
-			dm: boolean
-		}) => {
+		const registered = new Map<string, Entry>()
+		const authorFor = ({ key, self, dm }: Entry) => {
 			const settings = { ...DefaultSettings, ...jsonStorage.cache }
 			if (self && !settings.showOnSelf) return ''
 			if (!dm && !settings.showOutsideDMs) return ''
@@ -247,11 +236,9 @@ export default plugin<{ jsonStorage: Settings }>({
 			streaks.subscribe(pushBadges),
 			jsonStorage.subscribe(onSettings),
 			getModules(withProps<{ HTTP: HTTP }>('HTTP'), exports => {
-				http = exports.HTTP
 				setHTTP(exports.HTTP)
 				load()
 			}),
-			// modules/messages/native/renderer/RowGenerator.tsx
 			getModules(withName<RowManager>('RowManager'), ({ prototype }) => {
 				cleanup(
 					after(prototype, 'generate', row => {
@@ -291,9 +278,6 @@ export default plugin<{ jsonStorage: Settings }>({
 			}),
 			patchDMList(cleanup),
 		)
-	},
-	stop({ plugin }) {
-		plugin.requireReload()
 	},
 	SettingsComponent,
 })

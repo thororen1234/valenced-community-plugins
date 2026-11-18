@@ -11,7 +11,7 @@ export interface HTTP {
 	post<T = unknown>(request: Request): Promise<{ body?: T }>
 }
 
-let http: HTTP | undefined
+export let http: HTTP | undefined
 
 export function setHTTP(value: HTTP | undefined) {
 	http = value
