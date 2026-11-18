@@ -1,0 +1,20 @@
+{
+	"format": 1,
+	"id": "purpleeyez.youbar-plus",
+	"name": "YouBar+",
+	"description": "Add settings, DM and favorites buttons to the You Bar.",
+	"author": "Purple_Ξye™ <646535537334812682> (https://github.com/Purple-EyeZ \"GitHub\")",
+	"icon": "UserCircleIcon",
+	"version": "1.0.0",
+	"dependencies": {
+		"valenced.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": "*"
+		}
+	},
+	"dist": {
+		"script": "index.js"
+	}
+}

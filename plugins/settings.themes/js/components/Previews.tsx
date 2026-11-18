@@ -52,6 +52,13 @@ export const BoldFontFamilies = [
 /** Standard test emoji without variation selectors: 😀 😂 👍 🎉 🔥 🥺. */
 const SampleEmoji = ['1f600', '1f602', '1f44d', '1f389', '1f525', '1f97a']
 
+// convert emoji to text so previews work on iOS :3
+function emojiTextOf(codepoints: string) {
+	return String.fromCodePoint(
+		...codepoints.split('-').map(codepoint => Number.parseInt(codepoint, 16)),
+	)
+}
+
 /** Vertical spacing between preview elements and preceding labels. */
 export const PREVIEW_SPACING = 6
 
@@ -78,6 +85,9 @@ const styles = StyleSheet.create({
 	emoji: {
 		width: EmojiSize,
 		height: EmojiSize,
+	},
+	emojiText: {
+		fontSize: EmojiSize,
 	},
 })
 
@@ -284,17 +294,27 @@ export function EmojiPreview({
 	}, [plugin, group, id, count])
 
 	return (
-		<Stack direction="horizontal" spacing={4} style={styles.emojiRow}>
-			{paths?.map(
-				(path, index) =>
-					path && (
-						<Image
-							key={SampleEmoji[index]}
-							source={{ uri: `file://${path}` }}
-							style={styles.emoji}
-						/>
-					),
-			)}
+		<Stack
+			direction="horizontal"
+			spacing={4}
+			align="center"
+			style={styles.emojiRow}
+		>
+			{paths?.map((path, index) => {
+				const codepoints = SampleEmoji[index]!
+
+				return path ? (
+					<Image
+						key={codepoints}
+						source={{ uri: `file://${path}` }}
+						style={styles.emoji}
+					/>
+				) : (
+					<RNText key={codepoints} style={styles.emojiText}>
+						{emojiTextOf(codepoints)}
+					</RNText>
+				)
+			})}
 		</Stack>
 	)
 }

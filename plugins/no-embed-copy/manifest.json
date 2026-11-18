@@ -1,11 +1,11 @@
 {
 	"format": 1,
-	"id": "redstonekasi.no-embed-copy",
-	"name": "NoEmbedCopy",
+	"id": "thororen.no-embed-copy",
+	"name": "No Embed Copy",
 	"description": "Makes pressing on an embed no longer copy its content.",
-	"author": "redstonekasi <265064055490871297>",
+	"author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
 	"contributors": [
-		"thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")"
+		"redstonekasi <265064055490871297> (https://github.com/redstonekasi \"GitHub\")"
 	],
 	"icon": "CopyIcon",
 	"version": "1.0.0",

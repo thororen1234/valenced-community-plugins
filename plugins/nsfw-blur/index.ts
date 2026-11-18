@@ -30,12 +30,11 @@ export default plugin({
 			getModules(
 				withName<CreateMessageContent>('createMessageContent'),
 				module => {
-					if (!('default' in module) || typeof module.default !== 'function')
-						return
+					if (!('default' in module)) return
 
 					cleanup(
 						before(
-							module as { default: CreateMessageContent },
+							module,
 							'default',
 							args => {
 								const { message, options } = args[0] ?? {}
@@ -53,6 +52,7 @@ export default plugin({
 						),
 					)
 				},
+				{ returnNamespace: true },
 			),
 		)
 	},

@@ -1,0 +1,23 @@
+{
+	"format": 1,
+	"id": "thororen.tenor-gif-fix",
+	"name": "Tenor GIF Fix",
+	"description": "Download and share Tenor links as GIFs instead of MP4s.",
+	"author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+	"contributors": [
+		"nexpid <853550207039832084> (https://github.com/nexpid \"GitHub\")"
+	],
+	"icon": "GifIcon",
+	"version": "1.0.0",
+	"dependencies": {
+		"valenced.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": "*"
+		}
+	},
+	"dist": {
+		"script": "index.js"
+	}
+}

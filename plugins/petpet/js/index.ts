@@ -1,18 +1,19 @@
+import { ToastActionCreators } from '@valenced/discord/actions'
 import { getStore } from '@valenced/discord/flux'
 import { FileModule } from '@valenced/discord/native'
 import { getModules } from '@valenced/modules/finders'
 import { withProps } from '@valenced/modules/finders/filters'
 
 // todo: type this
-let token: any;
-let base: any;
-let UserStore: any;
-let unregister: (() => void) | undefined;
+let token: any
+let base: any
+let UserStore: any
+let unregister: (() => void) | undefined
 
-type ApplicationCommand = any;
+type ApplicationCommand = any
 type CommandsLib = {
-  commands: { registerCommand: (cmd: ApplicationCommand) => () => void }
-};
+	commands: { registerCommand: (cmd: ApplicationCommand) => () => void }
+}
 
 export enum ApplicationCommandOptionType {
 	SUB_COMMAND = 1,
@@ -42,7 +43,10 @@ async function fetchPetPetBase64(avatarUrl: string): Promise<string> {
 	const endpoint = `https://api.popcat.xyz/pet?image=${encodeURIComponent(avatarUrl)}`
 	const response = await fetch(endpoint)
 
-	if (!response.ok) {
+	if (
+		!response.ok ||
+		response.headers.get('content-type')?.includes('application/json')
+	) {
 		throw new Error(`Failed to fetch petpet GIF: ${response.status}`)
 	}
 
@@ -113,11 +117,11 @@ async function sendPetPetAttachment(
 }
 
 export default plugin({
-	start(api) {
+	start(api: any) {
 		const { registerCommand } = (api.commands as CommandsLib).commands
 
-		getModules(withProps('getToken'), exports => {
-			token = exports
+		getStore('AuthenticationStore', store => {
+			token = store
 		})
 		getModules(withProps('getAPIBaseURL', 'del'), exports => {
 			base = exports.getAPIBaseURL()
@@ -126,14 +130,14 @@ export default plugin({
 			UserStore = store
 		})
 
-		unregister = registerCommand(petPetCommand())
+		unregister = registerCommand(petPetCommand(api))
 	},
 	stop() {
 		unregister?.()
 	},
 })
 
-const petPetCommand = (): ApplicationCommand => ({
+const petPetCommand = (api: any): ApplicationCommand => ({
 	name: 'petpet',
 	displayName: 'petpet',
 	description: 'PetPet someone',
@@ -152,14 +156,22 @@ const petPetCommand = (): ApplicationCommand => ({
 			displayDescription: 'The user (or their id) to be patted',
 		},
 	],
-	execute: async (args, ctx) => {
+	execute: async (args: any, ctx: any) => {
 		try {
 			const user = await UserStore.getUser(args[0].value)
-			const avatarUrl = user.getAvatarURL(128).replace('.webp', '.png')
+			const avatarUrl = user.avatar
+				? user.getAvatarURL(128).replace('.webp', '.png')
+				: `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`
 
 			const base64Gif = await fetchPetPetBase64(avatarUrl)
 
 			await sendPetPetAttachment(ctx.channel.id, base64Gif)
-		} catch {}
+		} catch (error) {
+			api.plugin.reportError(error)
+			ToastActionCreators.open('PETPET_ERROR', {
+				text: `[PetPet]: ${error instanceof Error ? error.message : 'Failed to pet user.'}`,
+				variant: 'critical',
+			})
+		}
 	},
 })
