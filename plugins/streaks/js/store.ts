@@ -22,10 +22,14 @@ export interface Colors {
 export interface Settings {
 	tokens: Record<string, string>
 	colors: Colors
+	showOnSelf: boolean
+	showOutsideDMs: boolean
 }
 
 export const DefaultSettings: Settings = {
 	tokens: {},
+	showOnSelf: false,
+	showOutsideDMs: true,
 	colors: {
 		elite: '#9b39fe',
 		diamond: '#f7409c',

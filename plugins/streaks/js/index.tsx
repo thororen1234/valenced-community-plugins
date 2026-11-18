@@ -37,6 +37,7 @@ interface MessageRow {
 	type?: number
 	message?: {
 		id?: string
+		channelId?: string
 		authorId?: string
 	}
 }
@@ -53,7 +54,7 @@ interface Message {
 }
 
 const MessageRowType = 1
-const MaxSentAuthors = 2000
+const MaxRegistered = 2000
 
 type ChannelStore = DiscordModules.Flux.Store<{
 	getChannel(id: string): Channel | undefined
@@ -203,7 +204,36 @@ export default plugin<{ jsonStorage: Settings }>({
 		Dispatcher.subscribe('CONNECTION_OPEN', onConnectionOpen)
 		Dispatcher.subscribe('MESSAGE_CREATE', onMessageCreate as never)
 
-		const sentAuthors = new Set<string>()
+		const registered = new Map<
+			string,
+			{ key: string; self: boolean; dm: boolean }
+		>()
+		const authorFor = ({
+			key,
+			self,
+			dm,
+		}: {
+			key: string
+			self: boolean
+			dm: boolean
+		}) => {
+			const settings = { ...DefaultSettings, ...jsonStorage.cache }
+			if (self && !settings.showOnSelf) return ''
+			if (!dm && !settings.showOutsideDMs) return ''
+			return key
+		}
+
+		let shown = ''
+		const onSettings = () => {
+			pushBadges()
+			const settings = { ...DefaultSettings, ...jsonStorage.cache }
+			const next = `${settings.showOnSelf}:${settings.showOutsideDMs}`
+			if (next === shown) return
+			shown = next
+			const authors: Record<string, string> = {}
+			for (const [id, entry] of registered) authors[id] = authorFor(entry)
+			if (registered.size) putAuthors(authors)
+		}
 
 		cleanup(
 			() => {
@@ -215,7 +245,7 @@ export default plugin<{ jsonStorage: Settings }>({
 				clearBadges()
 			},
 			streaks.subscribe(pushBadges),
-			jsonStorage.subscribe(pushBadges),
+			jsonStorage.subscribe(onSettings),
 			getModules(withProps<{ HTTP: HTTP }>('HTTP'), exports => {
 				http = exports.HTTP
 				setHTTP(exports.HTTP)
@@ -226,19 +256,29 @@ export default plugin<{ jsonStorage: Settings }>({
 				cleanup(
 					after(prototype, 'generate', row => {
 						const message = row?.type === MessageRowType ? row.message : null
-						if (
-							!message?.id ||
-							!message.authorId ||
-							sentAuthors.has(message.id)
-						)
+						if (!message?.id || !message.authorId || registered.has(message.id))
 							return row
-						if (!(message.authorId in streaks.getState())) return row
 
-						if (sentAuthors.size >= MaxSentAuthors) sentAuthors.clear()
-						sentAuthors.add(message.id)
+						const channel = message.channelId
+							? ChannelStore.getChannel(message.channelId)
+							: undefined
+						const dm = !!channel?.isDM()
+						const self = message.authorId === currentUserId()
+						const key = self
+							? dm
+								? channel?.recipients[0]
+								: undefined
+							: message.authorId
+						if (!key || !(key in streaks.getState())) return row
+
+						if (registered.size >= MaxRegistered) registered.clear()
+						const entry = { key, self, dm }
+						registered.set(message.id, entry)
+						const author = authorFor(entry)
+						if (!author) return row
 
 						try {
-							putAuthors({ [message.id]: message.authorId })
+							putAuthors({ [message.id]: author })
 						} catch (e) {
 							plugin.reportError(
 								`Failed to send message author: ${getErrorStack(e)}`,

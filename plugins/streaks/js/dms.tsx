@@ -1,17 +1,36 @@
 import { getAssetIdByName } from '@valenced/assets'
 import { Design } from '@valenced/discord/design'
 import { getModules } from '@valenced/modules/finders'
-import { withName } from '@valenced/modules/finders/filters'
+import { createFilterGenerator } from '@valenced/modules/finders/filters'
 import { instead } from '@valenced/patcher'
 import { cloneElement, isValidElement } from 'react'
 import { Image, View } from 'react-native'
 import { useStore } from 'zustand/react'
 import { colorFor, storage, streaks } from './store'
-import type { FC, ReactElement, ReactNode } from 'react'
+import type {
+	Filter,
+	FilterGenerator,
+	FilterScopes,
+} from '@valenced/modules/finders/filters'
+import type { FC, MemoExoticComponent, ReactElement, ReactNode } from 'react'
 
 interface ContentProps {
 	channel: { isDM(): boolean; recipients?: string[] }
 }
+
+type WithMemoizedName = FilterGenerator<
+	<P = object>(
+		name: string,
+	) => Filter<{
+		Result: MemoExoticComponent<FC<P>> & { type: FC<P> }
+		Scopes: [typeof FilterScopes.Initialized]
+	}>
+>
+
+const withMemoizedName = createFilterGenerator(
+	([name], _, exports) => exports?.type?.name === name,
+	([name]) => `memoizedName(${name})`,
+) as WithMemoizedName
 
 const FireIcon = getAssetIdByName('FireIcon')
 
@@ -48,7 +67,10 @@ function insertBadge(tree: ReactNode, badge: ReactElement): ReactNode {
 	if (!isValidElement<{ children?: ReactNode }>(tree)) return tree
 
 	const { children } = tree.props
-	if (!Array.isArray(children)) return tree
+	if (!Array.isArray(children)) {
+		const child = insertBadge(children, badge)
+		return child === children ? tree : cloneElement(tree, undefined, child)
+	}
 
 	if (
 		children.some(
@@ -69,11 +91,10 @@ function insertBadge(tree: ReactNode, badge: ReactElement): ReactNode {
 
 export function patchDMList(cleanup: (...fns: (() => unknown)[]) => void) {
 	return getModules(
-		withName<FC<ContentProps>>('MessagesItemChannelContent'),
-		mod => {
-			const module = mod as { default: FC<ContentProps> }
+		withMemoizedName<ContentProps>('MessagesItemChannelContent'),
+		Content => {
 			cleanup(
-				instead(module, 'default', function (args, orig) {
+				instead(Content, 'type', function (args, orig) {
 					const tree = Reflect.apply(orig, this, args) as ReactNode
 					const { channel } = args[0]
 					const userId = channel?.isDM() ? channel.recipients?.[0] : undefined
@@ -86,6 +107,5 @@ export function patchDMList(cleanup: (...fns: (() => unknown)[]) => void) {
 				}),
 			)
 		},
-		{ returnNamespace: true },
 	)
 }

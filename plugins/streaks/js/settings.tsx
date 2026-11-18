@@ -16,7 +16,7 @@ import type { PluginSettingsComponent } from '@valenced/plugins/types'
 import type { ComponentProps } from 'react'
 import type { Settings } from './store'
 
-const { Stack, TableRow, TableRowGroup, TextInput } = Design
+const { Stack, TableRow, TableRowGroup, TableSwitchRow, TextInput } = Design
 
 type Props = ComponentProps<PluginSettingsComponent<{ jsonStorage: Settings }>>
 
@@ -25,6 +25,7 @@ export default function SettingsComponent({
 }: Props) {
 	const settings = storage.use()
 	const colors = { ...DefaultSettings.colors, ...settings?.colors }
+	const { showOnSelf, showOutsideDMs } = { ...DefaultSettings, ...settings }
 	const id = currentUserId()
 	const loggedIn = !!(id && settings?.tokens?.[id])
 	const [busy, setBusy] = useState(false)
@@ -58,6 +59,18 @@ export default function SettingsComponent({
 						disabled={busy}
 						onPress={loggedIn ? logout : login}
 						arrow
+					/>
+				</TableRowGroup>
+				<TableRowGroup>
+					<TableSwitchRow
+						label="Show on your own messages"
+						value={showOnSelf}
+						onValueChange={showOnSelf => storage.set({ showOnSelf })}
+					/>
+					<TableSwitchRow
+						label="Show outside DMs"
+						value={showOutsideDMs}
+						onValueChange={showOutsideDMs => storage.set({ showOutsideDMs })}
 					/>
 				</TableRowGroup>
 				<Stack>
