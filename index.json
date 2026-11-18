@@ -153,13 +153,26 @@
       ],
       "icon": "FireIcon",
       "channels": {
-        "latest": "1.0.0"
+        "latest": "1.0.1"
       },
       "versions": {
         "1.0.0": {
           "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.streaks@1.0.0.zip",
           "sha256": "f1f919f88c30bfa3d5f618645f0a6de31a62c1654c88b31342b1b79d8953e731",
           "size": 20543,
+          "dependencies": {
+            "valenced.api": {
+              "version": ">=1 <2"
+            },
+            "discord": {
+              "version": "*"
+            }
+          }
+        },
+        "1.0.1": {
+          "url": "https://thororen1234.github.io/valenced-community-plugins/pool/thororen.streaks@1.0.1.zip",
+          "sha256": "589b13c993ea942f676c4b195c9ec647898065b76e2264fec328f4fcabe98a57",
+          "size": 19126,
           "dependencies": {
             "valenced.api": {
               "version": ">=1 <2"
