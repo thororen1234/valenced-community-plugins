@@ -1,23 +1,24 @@
 package com.thororen.valenced.streaks
 
+import android.graphics.Canvas
+import android.graphics.ColorFilter
+import android.graphics.Paint
+import android.graphics.PixelFormat
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.DynamicDrawableSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.ImageSpan
-import android.text.style.StyleSpan
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import app.valenced.xposed.api.DexFinder
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import org.json.JSONObject
+import java.lang.reflect.Modifier
 import java.util.WeakHashMap
 
 private const val MESSAGE_VIEW = "com.discord.chat.presentation.message.MessageView"
@@ -28,10 +29,15 @@ private const val CHAT_LIST_VIEW_MANAGER = "com.discord.chat.presentation.list.C
 private const val FIRE_ICON = "design_components_icon_native_redesign_generated_images_fireicon"
 
 private const val CACHE_CAPACITY = 2000
+private const val GAP_DP = 4f
 
 internal class StreakHooks(dexFinder: DexFinder) {
     private data class Badge(val count: Int, val color: Int)
-    private class Bound(val messageId: String, val base: CharSequence, var rendered: CharSequence, var shown: Badge?)
+
+    private class Slot(val roleIcon: View, val wrapper: LinearLayout, val badge: ImageView, val name: TextView) {
+        var messageId: String? = null
+        var shown: Badge? = null
+    }
 
     private val authors = object : LinkedHashMap<String, String>(256, 0.75f, true) {
         override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, String>) = size > CACHE_CAPACITY
@@ -41,10 +47,10 @@ internal class StreakHooks(dexFinder: DexFinder) {
     private var badges: Map<String, Badge> = emptyMap()
 
     // Main thread only
-    private val names = WeakHashMap<TextView, Bound>()
+    private val slots = WeakHashMap<ViewGroup, Slot>()
     private var ids: ViewIds? = null
     private var fireIconId: Int? = null
-    private val iconAlignment = if (Build.VERSION.SDK_INT >= 29) DynamicDrawableSpan.ALIGN_CENTER else DynamicDrawableSpan.ALIGN_BASELINE
+    private var countTypeface: Typeface? = null
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
@@ -54,6 +60,23 @@ internal class StreakHooks(dexFinder: DexFinder) {
     private val chatListView: Class<*> = dexFinder.classLoader.loadClass(CHAT_LIST_VIEW_MANAGER).declaredMethods
         .single { it.name == "setFloatingChatInputEnabled" && !it.isBridge }
         .parameterTypes[0]
+
+    private val discordFont = runCatching {
+        val font = dexFinder.findClass {
+            matcher {
+                superClass("java.lang.Enum")
+                usingEqStrings("PrimaryMedium")
+            }
+        }!!
+        val setFont = dexFinder.findMethod {
+            matcher {
+                modifiers(Modifier.STATIC)
+                paramTypes("android.widget.TextView", font.name)
+            }
+        }!!
+        val constants = font.enumConstants!!.associateBy { (it as Enum<*>).name }
+        setFont to (constants["PrimarySemibold"] ?: constants.getValue("PrimaryMedium"))
+    }.getOrNull()
 
     private val unhooks: List<XC_MethodHook.Unhook>
 
@@ -68,18 +91,16 @@ internal class StreakHooks(dexFinder: DexFinder) {
         unhooks = listOf(XposedBridge.hookMethod(setMessage, object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 val view = param.thisObject as ViewGroup
-                val id = messageIdField.get(param.args[0]) as String
                 val ids = ids ?: ViewIds(view).also { ids = it }
-                val header = view.childWithId(ids.header) ?: return
-                val name = header.findViewById<View>(ids.authorName) as? TextView ?: return
+                val slot = slots[view] ?: run {
+                    val header = view.childWithId(ids.header) ?: return
+                    val roleIcon = header.findViewById<View>(ids.roleIcon) ?: return
+                    val name = header.findViewById<View>(ids.authorName) as? TextView ?: return
+                    insertSlot(roleIcon, name)?.also { slots[view] = it } ?: return
+                }
 
-                // Discord may skip setting the same text again, which would still have the streak
-                val current = name.text
-                val bound = names[name]?.takeIf { it.rendered.toString() == current.toString() }
-                    ?.let { Bound(id, it.base, current, it.shown) }
-                    ?: Bound(id, current, current, null)
-                names[name] = bound
-                render(name, bound)
+                slot.messageId = messageIdField.get(param.args[0]) as String
+                render(slot)
             }
         }))
     }
@@ -87,6 +108,7 @@ internal class StreakHooks(dexFinder: DexFinder) {
     private class ViewIds(view: View) {
         val header = view.idOf("header")
         val authorName = view.idOf("author_name")
+        val roleIcon = view.idOf("role_icon")
     }
 
     fun putAuthors(json: String) {
@@ -116,47 +138,84 @@ internal class StreakHooks(dexFinder: DexFinder) {
         badges = emptyMap()
         synchronized(authors) { authors.clear() }
         mainHandler.post {
-            renderAll()
-            names.clear()
+            var list: View? = null
+            for (slot in slots.values) {
+                list = list ?: chatList(slot.wrapper)
+                removeSlot(slot)
+            }
+            slots.clear()
+            list?.measureAndLayout()
         }
+    }
+
+    // The header is a ConstraintLayout chain with R8-renamed params, so the wrapper takes the role icon's ID and params
+    private fun insertSlot(roleIcon: View, name: TextView): Slot? {
+        val parent = roleIcon.parent as? ViewGroup ?: return null
+        val index = parent.indexOfChild(roleIcon)
+        val params = roleIcon.layoutParams
+        val context = roleIcon.context
+
+        val badge = ImageView(context).apply {
+            scaleType = ImageView.ScaleType.CENTER
+            visibility = View.GONE
+        }
+        val wrapper = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }
+
+        parent.removeViewAt(index)
+        wrapper.id = roleIcon.id
+        roleIcon.id = View.NO_ID
+        wrapper.addView(roleIcon, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        wrapper.addView(badge, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        parent.addView(wrapper, index, params)
+
+        return Slot(roleIcon, wrapper, badge, name)
+    }
+
+    private fun removeSlot(slot: Slot) {
+        val parent = slot.wrapper.parent as? ViewGroup ?: return
+        val index = parent.indexOfChild(slot.wrapper)
+        val params = slot.wrapper.layoutParams
+
+        slot.wrapper.removeAllViews()
+        parent.removeViewAt(index)
+        slot.roleIcon.id = slot.wrapper.id
+        parent.addView(slot.roleIcon, index, params)
     }
 
     private fun renderAll() {
         var list: View? = null
-        for ((name, bound) in names) {
-            if (render(name, bound)) {
-                name.requestLayout()
-                list = list ?: chatList(name)
+        for (slot in slots.values) {
+            if (render(slot)) {
+                slot.wrapper.requestLayout()
+                list = list ?: chatList(slot.wrapper)
             }
         }
         list?.measureAndLayout()
     }
 
-    private fun render(name: TextView, bound: Bound): Boolean {
-        val userId = synchronized(authors) { authors[bound.messageId] }
+    private fun render(slot: Slot): Boolean {
+        val userId = slot.messageId?.let { synchronized(authors) { authors[it] } }
         val badge = userId?.let { badges[it] }
-        if (badge == bound.shown) return false
+        val roleShown = slot.roleIcon.visibility == View.VISIBLE
 
-        val text = if (badge == null) bound.base else SpannableStringBuilder(bound.base).apply {
-            append(' ')
-            val icon = fireIcon(name)
-            if (icon != null) {
-                val size = name.textSize.toInt()
-                icon.setBounds(0, 0, size, size)
-                icon.setTint(badge.color)
-                append('￼')
-                setSpan(ImageSpan(icon, iconAlignment), length - 1, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            } else append("🔥")
-            val start = length
-            append(badge.count.toString())
-            setSpan(ForegroundColorSpan(badge.color), start, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(StyleSpan(Typeface.BOLD), start, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if (badge != slot.shown)
+            slot.badge.setImageDrawable(badge?.let { BadgeDrawable(fireIcon(slot.name), it, slot.name.textSize, countTypeface(slot.name)) })
+        slot.badge.visibility = if (badge != null) View.VISIBLE else View.GONE
+
+        val params = slot.badge.layoutParams as LinearLayout.LayoutParams
+        val margin = if (roleShown) (GAP_DP * slot.badge.resources.displayMetrics.density).toInt() else 0
+        if (params.marginStart != margin) {
+            params.marginStart = margin
+            slot.badge.layoutParams = params
         }
+        slot.wrapper.visibility = if (roleShown || badge != null) View.VISIBLE else View.GONE
 
-        val changed = text.toString() != bound.rendered.toString()
-        name.text = text
-        bound.rendered = text
-        bound.shown = badge
+        val changed = (badge == null) != (slot.shown == null) || badge?.count != slot.shown?.count
+        slot.shown = badge
         return changed
     }
 
@@ -165,6 +224,54 @@ internal class StreakHooks(dexFinder: DexFinder) {
         val id = fireIconId ?: view.resources.getIdentifier(FIRE_ICON, "drawable", view.context.packageName)
             .also { fireIconId = it }
         return if (id == 0) null else view.context.getDrawable(id)?.mutate()
+    }
+
+    private fun countTypeface(view: TextView): Typeface =
+        countTypeface ?: (discordFont?.let { (setFont, font) ->
+            runCatching { TextView(view.context).also { setFont.invoke(null, it, font) }.typeface }.getOrNull()
+        } ?: Typeface.DEFAULT_BOLD).also { countTypeface = it }
+
+    private class BadgeDrawable(private val icon: Drawable?, badge: Badge, size: Float, typeface: Typeface) : Drawable() {
+        private val text = if (icon == null) "🔥${badge.count}" else badge.count.toString()
+        private val iconSize = size.toInt()
+        private val gap = (size / 8).toInt()
+        private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = badge.color
+            textSize = size
+            this.typeface = typeface
+        }
+        private val width = (if (icon != null) iconSize + gap else 0) + paint.measureText(text).toInt()
+
+        init {
+            icon?.setBounds(0, 0, iconSize, iconSize)
+            icon?.setTint(badge.color)
+            setBounds(0, 0, width, iconSize)
+        }
+
+        override fun getIntrinsicWidth() = width
+
+        override fun getIntrinsicHeight() = iconSize
+
+        override fun draw(canvas: Canvas) {
+            canvas.save()
+            canvas.translate(bounds.left.toFloat(), bounds.top.toFloat())
+            icon?.draw(canvas)
+            val x = if (icon != null) (iconSize + gap).toFloat() else 0f
+            val y = iconSize / 2f - (paint.ascent() + paint.descent()) / 2
+            canvas.drawText(text, x, y, paint)
+            canvas.restore()
+        }
+
+        override fun setAlpha(alpha: Int) {
+            paint.alpha = alpha
+        }
+
+        override fun setColorFilter(colorFilter: ColorFilter?) {
+            paint.colorFilter = colorFilter
+        }
+
+        @Deprecated("Deprecated in Java")
+        override fun getOpacity() = PixelFormat.TRANSLUCENT
     }
 
     private fun chatList(view: View) =
