@@ -1,0 +1,25 @@
+{
+	"format": 1,
+	"id": "thororen.streaks",
+	"name": "Streaks",
+	"description": "Shows a streak next to a user when you exchange DMs with them on consecutive days.",
+	"author": "thororen <848339671629299742> (https://www.thororen.com \"Website\") (https://github.com/thororen1234 \"GitHub\")",
+	"contributors": ["Moowi <246128594756173824>"],
+	"icon": "FireIcon",
+	"version": "1.0.0",
+	"dependencies": {
+		"valenced.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": ">=354.12"
+		}
+	},
+	"dist": {
+		"script": "index.js",
+		"android": {
+			"path": "plugin.jar",
+			"class": "com.thororen.valenced.streaks.Streaks"
+		}
+	}
+}
